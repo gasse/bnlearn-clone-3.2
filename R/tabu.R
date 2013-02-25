@@ -216,9 +216,9 @@ tabu.search = function(x, start, whitelist, blacklist, score,
 
     if (debug) {
 
-      # update the test counter of the network; very useful to check how many
+      # update the score counter of the network; very useful to check how many
       # score comparison has been done up to now.
-      start$learning$ntests = get(".test.counter", envir = .GlobalEnv)
+      start$learning$nscores = get(".score.counter", envir = .GlobalEnv)
 
       cat("----------------------------------------------------------------\n")
       cat("* best operation was: ")

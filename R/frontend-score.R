@@ -92,8 +92,10 @@ choose.direction = function(x, arc, data, criterion = NULL, ..., debug = FALSE) 
 
   }#ELSE
 
-  # set the test/score counter.
+  # set the test/score counters.
   assign(".test.counter", 0, envir = .GlobalEnv)
+  assign(".test.counter.permut", 0, envir = .GlobalEnv)
+  assign(".score.counter", 0, envir = .GlobalEnv)
 
   if (debug)
     cat("* testing", arc[1], "-", arc[2], "for direction.\n" )

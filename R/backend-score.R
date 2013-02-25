@@ -16,9 +16,9 @@ score.delta = function(arc, network, data, score, score.delta,
     new.score = per.node.score(network = fake, score = score,
                         nodes = arc, extra.args = extra, data = data)
 
-    # update the test counter.
-    assign(".test.counter", get(".test.counter", envir = .GlobalEnv) + 2,
-      envir = .GlobalEnv)
+    # update the score counter.
+    assign(".score.counter", get(".score.counter", envir = .GlobalEnv) + 2,
+           envir = .GlobalEnv)
 
     # compare the network scores, minus numeric tolerance for better score
     # equivalence detection.
@@ -34,8 +34,8 @@ score.delta = function(arc, network, data, score, score.delta,
     new.score = per.node.score(network = fake, score = score,
                         nodes = arc[2], extra.args = extra, data = data)
 
-    # update the test counter.
-    assign(".test.counter", get(".test.counter", envir = .GlobalEnv) + 1,
+    # update the score counter.
+    assign(".score.counter", get(".score.counter", envir = .GlobalEnv) + 1,
       envir = .GlobalEnv)
 
     # compare the network scores.

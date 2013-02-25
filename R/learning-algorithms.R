@@ -5,6 +5,7 @@ bnlearn = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
     optimized = TRUE, strict = TRUE, undirected = FALSE) {
 
   assign(".test.counter", 0, envir = .GlobalEnv)
+  assign(".test.counter.permut", 0, envir = .GlobalEnv)
 
   res = NULL
   cluster.aware = FALSE
@@ -34,6 +35,7 @@ bnlearn = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
     cluster.aware = TRUE
     # set the test counter in all the cluster nodes.
     clusterEvalQ(cluster, assign(".test.counter", 0, envir = .GlobalEnv))
+    clusterEvalQ(cluster, assign(".test.counter.permut", 0, envir = .GlobalEnv))
     # disable debugging, the slaves do not cat() here.
     if (debug) {
 
@@ -203,6 +205,9 @@ bnlearn = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
       test = test, args = list(alpha = alpha), optimized = optimized,
       ntests = get(".test.counter", envir = .GlobalEnv))
 
+    if (test %in% resampling.tests)
+      learning$npermuts = get(".test.counter.permut", envir = .GlobalEnv)
+
     # include also the number of permutations/bootstrap samples
     # if it makes sense.
     if (!is.null(B))
@@ -222,9 +227,13 @@ bnlearn = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
   }#ELSE
 
   # add tests performed by the slaves to the test counter.
-  if (cluster.aware)
+  if (cluster.aware) {
     res$learning$ntests = res$learning$ntests +
       sum(unlist(clusterEvalQ(cluster, get(".test.counter", envir = .GlobalEnv))))
+    if (test %in% resampling.tests)
+      res$learning$npermuts = res$learning$npermuts + sum(unlist(clusterEvalQ(
+        cluster, get(".test.counter.permuts", envir = .GlobalEnv))))
+  }#THEN
   # save the learning method used.
   res$learning$algo = method
   # save the 'optimized' flag.
@@ -317,8 +326,8 @@ greedy.search = function(x, start = NULL, whitelist = NULL, blacklist = NULL,
   extra.args = check.score.args(score = score, network = start,
                  data = x, extra.args = extra.args)
 
-  # create the test counter in .GlobalEnv.
-  assign(".test.counter", 0, envir = .GlobalEnv)
+  # create the score counter in .GlobalEnv.
+  assign(".score.counter", 0, envir = .GlobalEnv)
 
   # call the right backend.
   if (heuristic == "hc") {
@@ -340,7 +349,7 @@ greedy.search = function(x, start = NULL, whitelist = NULL, blacklist = NULL,
 
   # set the metadata of the network in one stroke.
   res$learning = list(whitelist = whitelist, blacklist = blacklist,
-    test = score, ntests = get(".test.counter", envir = .GlobalEnv),
+    test = score, nscores = get(".score.counter", envir = .GlobalEnv),
     algo = heuristic, args = extra.args, optimized = optimized)
 
   invisible(res)
@@ -402,10 +411,13 @@ hybrid.search = function(x, whitelist = NULL, blacklist = NULL,
   # set the metadata of the network in one stroke.
   res$learning = list(whitelist = rst$learning$whitelist,
     blacklist = rst$learning$blacklist, test = res$learning$test,
-    ntests = res$learning$ntests + rst$learning$ntests, algo = method,
+    ntests = rst$learning$ntests, nscores = res$learning$nscores, algo = method,
     args = c(res$learning$args, rst$learning$args), optimized = optimized,
     restrict = restrict, rstest = rst$learning$test, maximize = maximize,
     maxscore = res$learning$test)
+
+  if (rst$learning$test %in% resampling.tests)
+    res$learning$npermuts = rst$learning$npermuts
 
   invisible(res)
 
@@ -471,6 +483,7 @@ mb.backend = function(x, target, method, whitelist = NULL, blacklist = NULL,
     optimized = TRUE) {
 
   assign(".test.counter", 0, envir = .GlobalEnv)
+  assign(".test.counter.permut", 0, envir = .GlobalEnv)
 
   # check the data are there.
   check.data(x)
@@ -582,6 +595,7 @@ nbr.backend = function(x, target, method, whitelist = NULL, blacklist = NULL,
     test = NULL, alpha = 0.05, B = NULL, debug = FALSE, optimized = TRUE) {
 
   assign(".test.counter", 0, envir = .GlobalEnv)
+  assign(".test.counter.permut", 0, envir = .GlobalEnv)
 
   # check the data are there.
   check.data(x)

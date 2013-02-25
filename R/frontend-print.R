@@ -80,7 +80,7 @@ print.bn = function(x, ...) {
     if ("alpha" %in% params)
       wcat("  alpha threshold:                      ", format(x$learning$args$alpha))
     if ("B" %in% params)
-      wcat("  permutations:                         ", format(x$learning$args$B))
+      wcat("  permutations/bootstrap samples:       ", format(x$learning$args$B))
     if ("iss" %in% params)
       wcat("  imaginary sample size:                ", format(x$learning$args$iss))
     if ("phi" %in% params)
@@ -97,7 +97,14 @@ print.bn = function(x, ...) {
 
     }#THEN
 
-    wcat("  tests used in the learning procedure: ", x$learning$ntests)
+    if ("nscores" %in% names(x$learning))
+      wcat("  scores used in the search procedure:  ", x$learning$nscores)
+
+    if ("ntests" %in% names(x$learning))
+      wcat("  tests used in the learning procedure: ", x$learning$ntests)
+
+    if ("npermuts" %in% names(x$learning))
+      wcat("  permutations used within tests:       ", x$learning$npermuts)
 
     if (!is.null(x$learning$optimized))
       wcat("  optimized:                            ", x$learning$optimized)

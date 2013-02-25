@@ -37,6 +37,10 @@ second.principle = function(x, cluster = NULL, mb, whitelist, blacklist,
     test = test, args = list(alpha = alpha),
     ntests = get(".test.counter", envir = .GlobalEnv))
 
+  npermuts = get(".test.counter.permut", envir = .GlobalEnv)
+  if (!is.null(npermuts) & npermuts > 0)
+    learning$npermuts = npermuts
+
   # include also the number of permutations/bootstrap samples
   # if it makes sense.
   if (!is.null(B))
