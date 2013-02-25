@@ -3,6 +3,7 @@ export(
   "iamb",
   "inter.iamb",
   "fast.iamb",
+  "fdr.iamb",
   "mmpc",
   "si.hiton.pc",
   "chow.liu",

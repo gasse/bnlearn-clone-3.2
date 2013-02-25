@@ -150,6 +150,31 @@ bnlearn = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
     }#ELSE
 
   }#THEN
+  else if (method == "fdr.iamb") {
+    
+    if (cluster.aware) {
+      
+      mb = iambfdr.global.cluster(
+        x = x, cluster = cluster, whitelist = whitelist, blacklist = blacklist,
+        test = test, alpha = alpha, B = B, strict = strict, debug = debug)
+      
+    }#THEN
+    else if (optimized) {
+      
+      mb = iambfdr.global.optimized(
+        x = x, whitelist = whitelist, blacklist = blacklist,
+        test = test, alpha = alpha, B = B, strict = strict, debug = debug)
+      
+    }#THEN
+    else {
+      
+      mb = iambfdr.global(
+        x = x, whitelist = whitelist, blacklist = blacklist,
+        test = test, alpha = alpha, B = B, strict = strict, debug = debug)
+      
+    }#ELSE
+    
+  }#THEN
   else if (method == "mmpc") {
 
     if (cluster.aware) {
@@ -583,6 +608,13 @@ mb.backend = function(x, target, method, whitelist = NULL, blacklist = NULL,
     mb = inter.ia.markov.blanket(x = target, data = x, nodes = nodes, alpha = alpha,
            B = B, whitelist = whitelist, blacklist = NULL, start = start,
            backtracking = NULL, test = test, debug = debug)
+
+  }#THEN
+  else if (method == "fdr.iamb") {
+
+    mb = iambfdr(x = target, data = x, nodes = nodes, alpha = alpha, B = B,
+                 whitelist = whitelist, blacklist = NULL, backtracking = NULL,
+                 test = test, debug = debug)
 
   }#THEN
 

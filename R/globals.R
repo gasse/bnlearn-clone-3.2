@@ -21,8 +21,8 @@ available.discrete.mi = c("mi")
 available.continuous.mi = c("mi-g")
 available.mi = c(available.discrete.mi, available.continuous.mi)
 
-markov.blanket.algorithms = c("gs", "iamb", "fast.iamb", "inter.iamb")
 local.search.algorithms = c("mmpc", "si.hiton.pc")
+markov.blanket.algorithms = c("gs", "iamb", "fast.iamb", "inter.iamb", "fdr.iamb")
 constraint.based.algorithms = c(markov.blanket.algorithms, local.search.algorithms)
 score.based.algorithms = c("hc", "tabu")
 hybrid.algorithms = c("rsmax2", "mmhc")
@@ -40,6 +40,7 @@ method.labels = c(
   'iamb' = "Incremental Association",
   'fast.iamb' = "Fast Incremental Association",
   'inter.iamb' = "Interleaved Incremental Association",
+  'fdr.iamb' = "Incremental Association with False Discovery Rate control",
   'rnd' = "random/generated",
   'hc' = "Hill-Climbing",
   'tabu' = "Tabu Search",
