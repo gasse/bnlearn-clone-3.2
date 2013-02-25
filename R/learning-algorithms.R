@@ -690,23 +690,90 @@ nbr.backend = function(x, target, method, whitelist = NULL, blacklist = NULL,
   # call the right backend, forward phase.
   if (method == "mmpc") {
 
+    # forward phase
     nbr = maxmin.pc.forward.phase(target, data = x, nodes = nodes, 
            alpha = alpha, B = B, whitelist = whitelist, blacklist = blacklist,
            test = test, optimized = optimized, debug = debug)
 
+    # backward phase
+    nbr = neighbour(target, mb = structure(list(nbr), names = target), data = x, 
+                    alpha = alpha, B = B, whitelist = whitelist, blacklist = blacklist,
+                    test = test, markov = FALSE, debug = debug)
+
   }#THEN
   else if (method == "si.hiton.pc") {
 
+    # forward phase
     nbr = si.hiton.pc.heuristic(target, data = x, nodes = nodes, alpha = alpha,
             B = B, whitelist = whitelist, blacklist = blacklist, test = test,
-            optimized = optimized, debug = debug) 
+            optimized = optimized, debug = debug)
+
+    # backward phase
+    nbr = neighbour(target, mb = structure(list(nbr), names = target), data = x, 
+                    alpha = alpha, B = B, whitelist = whitelist, blacklist = blacklist,
+                    test = test, markov = FALSE, debug = debug)
 
   }#ELSE
+  else if (method == "gs.pc") {
 
-  # this is the backward phase.
-  nbr = neighbour(target, mb = structure(list(nbr), names = target), data = x, 
-          alpha = alpha, B = B, whitelist = whitelist, blacklist = blacklist,
-          test = test, markov = FALSE, debug = debug)
+    mb = gs.markov.blanket(x = target, data = x, nodes = nodes,
+                           alpha = alpha, B = B, whitelist = whitelist, blacklist = NULL,
+                           backtracking = NULL, test = test, debug = debug)
+
+    # PC filtering phase.
+    nbr = neighbour(target, mb = structure(list(mb), names = target), data = x, 
+                    alpha = alpha, B = B, whitelist = whitelist, blacklist = blacklist,
+                    test = test, markov = FALSE, debug = debug)
+
+  }#ELSE
+  else if (method == "iapc") {
+
+    mb = ia.markov.blanket(x = target, data = x, nodes = nodes,
+                           alpha = alpha, B = B, whitelist = whitelist, blacklist = NULL,
+                           backtracking = NULL, test = test, debug = debug)
+
+    # PC filtering phase.
+    nbr = neighbour(target, mb = structure(list(mb), names = target), data = x, 
+                    alpha = alpha, B = B, whitelist = whitelist, blacklist = blacklist,
+                    test = test, markov = FALSE, debug = debug)
+
+  }#ELSE
+  else if (method == "fast.iapc") {
+
+    mb = fast.ia.markov.blanket(x = target, data = x, nodes = nodes,
+                                alpha = alpha, B = B, whitelist = whitelist, blacklist = NULL,
+                                backtracking = NULL, test = test, debug = debug)
+
+    # PC filtering phase.
+    nbr = neighbour(target, mb = structure(list(mb), names = target), data = x, 
+                    alpha = alpha, B = B, whitelist = whitelist, blacklist = blacklist,
+                    test = test, markov = FALSE, debug = debug)
+
+  }#ELSE
+  else if (method == "inter.iapc") {
+
+    mb = inter.ia.markov.blanket(x = target, data = x, nodes = nodes,
+                                 alpha = alpha, B = B, whitelist = whitelist, blacklist = NULL,
+                                 backtracking = NULL, test = test, debug = debug)
+
+    # PC filtering phase.
+    nbr = neighbour(target, mb = structure(list(mb), names = target), data = x, 
+                    alpha = alpha, B = B, whitelist = whitelist, blacklist = blacklist,
+                    test = test, markov = FALSE, debug = debug)
+
+  }#ELSE
+  else if (method == "fdr.iapc") {
+
+    mb = iambfdr(x = target, data = x, nodes = nodes, alpha = alpha, B = B,
+                 whitelist = whitelist, blacklist = NULL, backtracking = NULL,
+                 test = test, debug = debug)
+
+    # PC filtering phase.
+    nbr = neighbour(target, mb = structure(list(mb), names = target), data = x, 
+                    alpha = alpha, B = B, whitelist = whitelist, blacklist = blacklist,
+                    test = test, markov = FALSE, debug = debug)
+
+  }#ELSE
 
   return(nbr[["nbr"]])
 
