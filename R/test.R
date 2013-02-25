@@ -297,7 +297,7 @@ conditional.test = function(x, y, sx, data, test, B, alpha = 1, learning = TRUE)
     # Mutual Information for Gaussian Data (monte carlo permutation distribution)
     else if ((test == "mc-mi-g") || (test == "smc-mi-g")) {
 
-      statistic = cmig.test(x, y, sx, data, ndata, gsquare = TRUE)
+      statistic = cmig.test(x, y, sx, data, ndata, gsquare = TRUE, strict = !learning)
       perm.test = cgmc.test(x, y, sx, data, ndata, samples = B,
                   alpha = ifelse(test == "smc-mi-g", alpha, 1), test = 3L)
       p.value = perm.test[1]
