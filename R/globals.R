@@ -143,10 +143,11 @@ graph.generation.extra.args = list(
   "averaged" = "threshold"
 )
 
-cpq.algorithms = c("ls")
+cpq.algorithms = c("ls", "exact")
 
 cpq.labels = c(
-  "ls" = "Logic/Forward Sampling"
+  "ls" = "Logic/Forward Sampling",
+  "exact" = "Exact Inference"
 )
 
 cpq.extra.args = list(
