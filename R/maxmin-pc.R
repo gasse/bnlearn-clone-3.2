@@ -12,8 +12,13 @@ maxmin.pc.optimized = function(x, whitelist, blacklist, test,
     # 1. [Forward Phase (I)]
     mb[[node]] = maxmin.pc.forward.phase(node, data = x, nodes = nodes,
          alpha = alpha, B = B, whitelist = whitelist, blacklist = blacklist,
-         backtracking = backtracking, test = test, optimized = TRUE,
-         debug = debug)
+         backtracking = backtracking, test = test, debug = debug)
+
+    # Don't use known good nodes in the backward phase, as it would prevent
+    # MMPC's AND filter on neighbourhoods, needed for it's correctness.
+    if (any(backtracking)) {
+      backtracking = unlist(sapply(backtracking[!backtracking], function(x){x}))
+    }#THEN
 
     # 2. [Backward Phase (II)]
     mb[[node]] = neighbour(node, mb = mb, data = x, alpha = alpha,
