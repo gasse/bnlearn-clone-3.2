@@ -42,7 +42,7 @@ maxmin.pc.cluster = function(x, cluster, whitelist, blacklist,
   # 1. [Forward Phase (I)]
   mb = parLapply(cluster, as.list(nodes), maxmin.pc.forward.phase, data = x,
          nodes = nodes, alpha = alpha, B = B, whitelist = whitelist,
-         blacklist = blacklist, test = test, optimized = TRUE, debug = debug)
+         blacklist = blacklist, test = test, debug = debug)
   names(mb) = nodes
 
   # 2. [Backward Phase (II)]
@@ -66,7 +66,7 @@ maxmin.pc = function(x, whitelist, blacklist, test, alpha, B,
   # 1. [Forward Phase (I)]
   mb = lapply(as.list(nodes), maxmin.pc.forward.phase, data = x, nodes = nodes,
          alpha = alpha, B = B, whitelist = whitelist, blacklist = blacklist,
-         test = test, optimized = FALSE, debug = debug)
+         test = test, debug = debug)
   names(mb) = nodes
 
   # 2. [Backward Phase (II)]
@@ -83,7 +83,7 @@ maxmin.pc = function(x, whitelist, blacklist, test, alpha, B,
 }#MAXMIN.PC
 
 maxmin.pc.forward.phase = function(x, data, nodes, alpha, B, whitelist,
-  blacklist, backtracking = NULL, test, optimized = TRUE, debug = FALSE) {
+  blacklist, backtracking = NULL, test, debug = FALSE) {
 
   nodes = nodes[nodes != x]
   known.good = known.bad = c()
@@ -108,7 +108,7 @@ maxmin.pc.forward.phase = function(x, data, nodes, alpha, B, whitelist,
   nodes = nodes[!(nodes %in% c(cpc, blacklisted))]
 
   # use backtracking for a further screening of the nodes to be checked.
-  if (!is.null(backtracking) && optimized) {
+  if (!is.null(backtracking)) {
 
     # X adiacent to Y <=> Y adiacent to X
     known.good = names(backtracking[backtracking])
@@ -133,26 +133,14 @@ maxmin.pc.forward.phase = function(x, data, nodes, alpha, B, whitelist,
   # phase I (stepwise forward selection)
   repeat {
 
-    # get an association measure for each of the available nodes.
-    if (optimized) {
+    # do not check nodes which have a p-value above the alpha
+    # threshold, as it can only increase; do not check both 'known
+    # bad' and 'known good' ones.
+    to.be.checked = setdiff(names(which(association < alpha)), c(cpc, known.bad))
 
-      # do not check nodes which have a p-value above the alpha
-      # threshold, as it can only increase; do not check both 'known
-      # bad' and 'known good' ones.
-      to.be.checked = setdiff(names(which(association < alpha)), c(cpc, known.bad))
-
-      association = sapply(to.be.checked, maxmin.pc.heuristic.optimized, y = x,
-                      sx = cpc, data = data, test = test, alpha = alpha, B = B,
-                      association = association, debug = debug)
-
-    }#THEN
-    else {
-
-      association = sapply(nodes, maxmin.pc.heuristic, y = x, sx = cpc,
-                      data = data, test = test, alpha = alpha, B = B,
-                      debug = debug)
-
-    }#ELSE
+    association = sapply(to.be.checked, maxmin.pc.heuristic.optimized, y = x,
+                    sx = cpc, data = data, test = test, alpha = alpha, B = B,
+                    association = association, debug = debug)
 
     # stop if there are no candidates for inclusion.
     if (all(association > alpha) || length(nodes) == 0 || is.null(nodes)) break
@@ -179,52 +167,6 @@ maxmin.pc.forward.phase = function(x, data, nodes, alpha, B, whitelist,
   return(cpc)
 
 }#MAXMIN.PC.FORWARD.PHASE
-
-maxmin.pc.heuristic = function(x, y, sx, data, test, alpha, B, debug = FALSE) {
-
-  k = 0
-  min.assoc = 0
-
-  if (debug)
-    cat("  * checking node", x ,"for association.\n")
-
-  repeat {
-
-    # create all the possible subsets of size k of the candidate
-    # parent-children set.
-    dsep.subsets = subsets(length(sx), k, sx)
-
-    for (s in 1:nrow(dsep.subsets)) {
-
-      a = conditional.test(x, y, dsep.subsets[s,], data = data, test = test, B = B,
-            alpha = alpha)
-
-      if (debug) {
-
-        cat("    > trying conditioning subset '", dsep.subsets[s,], "'.\n")
-        cat("    > node", x, "has p-value:", a, ".\n")
-
-      }#THEN
-
-      # minimum association means maximum p-value.
-      min.assoc = max(min.assoc, a)
-
-    }#FOR
-
-    if (k < length(sx))
-      k = k + 1
-    else
-      break
-
-  }#REPEAT
-
-  if (debug)
-    cat("    > node", x, "has a minimum association of",
-              min.assoc, ".\n")
-
-  return(min.assoc)
-
-}#MAXMIN.PC.HEURISTIC
 
 maxmin.pc.heuristic.optimized = function(x, y, sx, data, test, alpha, B,
     association, debug = FALSE) {

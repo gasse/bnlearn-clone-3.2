@@ -693,7 +693,7 @@ nbr.backend = function(x, target, method, whitelist = NULL, blacklist = NULL,
     # forward phase
     nbr = maxmin.pc.forward.phase(target, data = x, nodes = nodes, 
            alpha = alpha, B = B, whitelist = whitelist, blacklist = blacklist,
-           test = test, optimized = optimized, debug = debug)
+           test = test, debug = debug)
 
     # backward phase
     nbr = neighbour(target, mb = structure(list(nbr), names = target), data = x, 
