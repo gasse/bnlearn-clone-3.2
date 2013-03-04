@@ -72,8 +72,8 @@ empty.graph = function(nodes, num = 1) {
 }#EMPTY.GRAPH
 
 # perform conditional probability queries.
-cpquery = function(fitted, event, evidence, cluster = NULL, method = "ls", ..., debug = FALSE) {
-
+cpquery = function(fitted, event, evidence = TRUE, cluster = NULL, method = "ls", ..., debug = FALSE) {
+  
   # check fitted's class.
   check.fit(fitted)
   # check debug.
@@ -81,8 +81,6 @@ cpquery = function(fitted, event, evidence, cluster = NULL, method = "ls", ..., 
   # check event and evidence.
   if (missing(event))
     stop("the expression describing the event is missing.")
-  if (missing(evidence))
-    stop("the expression describing the evidence is missing.")
   # check the generation method.
   if (!(method %in% cpq.algorithms))
     stop(paste(c("valid conditional probability query methods are:\n",
@@ -123,7 +121,7 @@ cpquery = function(fitted, event, evidence, cluster = NULL, method = "ls", ..., 
 }#CPQUERY
 
 # compute conditional probability distributions
-cpdist = function(fitted, nodes, evidence, cluster = NULL, method = "ls", ..., debug = FALSE) {
+cpdist = function(fitted, nodes, evidence=TRUE, cluster = NULL, method = "ls", ..., debug = FALSE) {
 
   # check fitted's class.
   check.fit(fitted)
@@ -131,8 +129,6 @@ cpdist = function(fitted, nodes, evidence, cluster = NULL, method = "ls", ..., d
   check.nodes(nodes, graph = fitted)
   # check debug.
   check.logical(debug)
-  if (missing(evidence))
-    stop("the expression describing the evidence is missing.")
   # check the generation method.
   if (!(method %in% cpq.algorithms))
     stop(paste(c("valid conditional probability query methods are:\n",
