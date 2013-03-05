@@ -1,5 +1,8 @@
 
-conditional.test = function(x, y, sx, data, test, B, alpha = 1, learning = TRUE) {
+conditional.test = function(x, y, sx, data, test, B, alpha = 1, learning = TRUE, debug = FALSE) {
+
+  if (debug)
+    cat("  > testing independence (", x ,",", y, "|", sx, ") :")
 
   if (learning) {
 
@@ -328,6 +331,9 @@ conditional.test = function(x, y, sx, data, test, B, alpha = 1, learning = TRUE)
     }#THEN
 
   }#ELSE
+
+  if (debug)
+    cat("p-value is", p.value, "\n")
 
   if (learning) {
 

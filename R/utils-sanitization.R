@@ -2115,3 +2115,29 @@ check.dnode.vs.spec = function(new, old, node, cpt.levels) {
 
 }#CHECK.DNODE.VS.SPEC
 
+# Check the type of neigbourhood join : OR or AND.
+check.nbr.join = function(nbr.join, default = "AND") {
+  
+  if (missing(nbr.join) || is.null(nbr.join))
+    nbr.join = default
+  
+  if (!nbr.join %in% c("OR", "AND"))
+    stop("valid neighbourhood joins are OR (outer join) and AND (inner join).")
+  
+  return(nbr.join)
+  
+}#CHECK.NBR.JOIN
+
+check.hpc.pc.method = function(pc.method, default = "fdr.iapc") {
+  
+  if (missing(pc.method) || is.null(pc.method))
+    pc.method = default
+  
+  ok = setdiff(local.search.algorithms, "hpc")
+  if (!(pc.method %in% ok))
+    stop(paste(c("valid pc methods are:\n",
+                 sprintf("    %-10s %s\n", ok, method.labels[ok])), sep = ""))
+  
+  return(pc.method)
+  
+}#CHECK.HPC.PC.METHOD

@@ -82,6 +82,20 @@ si.hiton.pc = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
   
 }#MMPC
 
+# HPC frontend.
+hpc = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
+               test = NULL, alpha = 0.05, B = NULL, debug = FALSE, optimized = TRUE,
+               strict = FALSE, undirected = TRUE, nbr.join = NULL,
+               pc.method = NULL) {
+
+  bnlearn(x = x, cluster = cluster, whitelist = whitelist,
+          blacklist = blacklist, test = test, alpha = alpha, B = B,
+          method = "hpc", debug = debug, optimized = optimized,
+          strict = strict, undirected = undirected, nbr.join = nbr.join,
+          pc.method = pc.method)
+
+}#HPC
+
 # ARACNE frontend.
 aracne = function(x, whitelist = NULL, blacklist = NULL, mi = NULL,
                   debug = FALSE) {
@@ -156,25 +170,43 @@ mmhc = function(x, whitelist = NULL, blacklist = NULL, test = NULL,
   
 }#MMHC
 
+# H2PC frontend.
+h2pc = function(x, whitelist = NULL, blacklist = NULL, test = NULL,
+                score = NULL, alpha = 0.05, B = NULL, ..., restart = 0, perturb = 1,
+                max.iter = Inf, optimized = TRUE, strict = FALSE, debug = FALSE,
+                nbr.join = NULL, pc.method = NULL) {
+  
+  restrict.args = list(test = test, alpha = alpha, B = B, strict = strict,
+                       nbr.join = nbr.join, pc.method = pc.method)
+  maximize.args = c(list(...), restart = restart,
+                    perturb = perturb, max.iter = max.iter)
+  
+  hybrid.search(x, whitelist = whitelist, blacklist = blacklist,
+                restrict = "hpc", maximize = "hc", restrict.args = restrict.args,
+                maximize.args = maximize.args, score = score, optimized = optimized,
+                debug = debug)
+  
+}#H2PC
+
 # Frontend for the Markov blanket learning algotrithms.
 learn.mb = function(x, node, method, whitelist = NULL, blacklist = NULL,
                     start = NULL, test = NULL, alpha = 0.05, B = NULL, debug = FALSE,
-                    optimized = TRUE) {
+                    optimized = TRUE, ...) {
   
   mb.backend(x, target = node, method = method, whitelist = whitelist,
              blacklist = blacklist, start = start, test = test, alpha = alpha,
-             B = B, debug = debug, optimized = optimized)
+             B = B, debug = debug, optimized = optimized, ...)
   
 }#LEARN.MB
 
 # Frontend for causal discovery learning algotrithms.
 learn.nbr = function(x, node, method, whitelist = NULL, blacklist = NULL,
                      start = NULL, test = NULL, alpha = 0.05, B = NULL, debug = FALSE,
-                     optimized = TRUE) {
+                     optimized = TRUE, ...) {
   
   nbr.backend(x, target = node, method = method, whitelist = whitelist,
               blacklist = blacklist, test = test, alpha = alpha, B = B, debug = debug,
-              optimized = optimized)
+              optimized = optimized, ...)
   
 }#LEARN.NBR
 
