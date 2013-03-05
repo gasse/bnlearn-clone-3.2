@@ -2,7 +2,7 @@
 # Grow-Shrink frontend.
 gs = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
               test = NULL, alpha = 0.05, B = NULL, debug = FALSE, optimized = TRUE,
-              strict = FALSE, undirected = FALSE) {
+              strict = FALSE, undirected = TRUE) {
   
   bnlearn(x = x, cluster = cluster, whitelist = whitelist,
           blacklist = blacklist, test = test, alpha = alpha, B = B, debug = debug,
@@ -13,7 +13,7 @@ gs = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
 # Incremental Association frontend.
 iamb = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
                 test = NULL, alpha = 0.05, B = NULL, debug = FALSE, optimized = TRUE,
-                strict = FALSE, undirected = FALSE) {
+                strict = FALSE, undirected = TRUE) {
   
   bnlearn(x = x, cluster = cluster, whitelist = whitelist,
           blacklist = blacklist, test = test, alpha = alpha, B = B, method = "iamb",
@@ -25,7 +25,7 @@ iamb = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
 # Fast-IAMB frontend.
 fast.iamb = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
                      test = NULL, alpha = 0.05, B = NULL, debug = FALSE, optimized = TRUE,
-                     strict = FALSE, undirected = FALSE) {
+                     strict = FALSE, undirected = TRUE) {
   
   bnlearn(x = x, cluster = cluster, whitelist = whitelist,
           blacklist = blacklist, test = test, alpha = alpha, B = B,
@@ -37,7 +37,7 @@ fast.iamb = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
 # Inter-IAMB frontend.
 inter.iamb = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
                       test = NULL, alpha = 0.05, B = NULL, debug = FALSE, optimized = TRUE,
-                      strict = FALSE, undirected = FALSE) {
+                      strict = FALSE, undirected = TRUE) {
   
   bnlearn(x = x, cluster = cluster, whitelist = whitelist,
           blacklist = blacklist, test = test, alpha = alpha, B = B,
@@ -49,7 +49,7 @@ inter.iamb = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
 # FDR-IAMB frontend.
 fdr.iamb = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
                     test = NULL, alpha = 0.05, B = NULL, debug = FALSE, optimized = TRUE,
-                    strict = FALSE, undirected = FALSE) {
+                    strict = FALSE, undirected = TRUE) {
   
   bnlearn(x = x, cluster = cluster, whitelist = whitelist,
           blacklist = blacklist, test = test, alpha = alpha, B = B,
@@ -61,24 +61,24 @@ fdr.iamb = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
 # MMPC frontend.
 mmpc = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
                 test = NULL, alpha = 0.05, B = NULL, debug = FALSE, optimized = TRUE,
-                strict = FALSE) {
+                strict = FALSE, undirected = TRUE) {
   
   bnlearn(x = x, cluster = cluster, whitelist = whitelist,
           blacklist = blacklist, test = test, alpha = alpha, B = B,
           method = "mmpc", debug = debug, optimized = optimized,
-          strict = strict, undirected = TRUE)
+          strict = strict, undirected = undirected)
   
 }#MMPC
 
 # Semi-Interleaved HITON-PC.
 si.hiton.pc = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
                        test = NULL, alpha = 0.05, B = NULL, debug = FALSE, optimized = TRUE,
-                       strict = FALSE) {
+                       strict = FALSE, undirected = TRUE) {
   
   bnlearn(x = x, cluster = cluster, whitelist = whitelist,
           blacklist = blacklist, test = test, alpha = alpha, B = B,
           method = "si.hiton.pc", debug = debug, optimized = optimized,
-          strict = strict, undirected = TRUE)
+          strict = strict, undirected = undirected)
   
 }#MMPC
 
