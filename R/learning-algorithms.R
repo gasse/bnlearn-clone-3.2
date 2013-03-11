@@ -255,6 +255,17 @@ bnlearn = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
     }#ELSE
     
   }#THEN
+  else if (method == "cached.hpc") {
+    
+    pc.method = check.hpc.pc.method(extra.args$pc.method)
+    nbr.join = check.nbr.join(extra.args$nbr.join)
+    
+    mb = hybrid.pc.cached.global(
+      data = x, whitelist = whitelist, blacklist = blacklist, test = test,
+      alpha = alpha, B = B, strict = strict, pc.method = pc.method,
+      nbr.join = nbr.join, debug = debug)
+    
+  }#THEN
 
   if (undirected) {
 
@@ -822,6 +833,17 @@ nbr.backend = function(x, target, method, whitelist = NULL, blacklist = NULL,
     nbr = hybrid.pc(t=target, data = x, nodes = nodes, pc.method = pc.method,
                     alpha = alpha, B = B, whitelist = whitelist, blacklist = NULL,
                     backtracking = NULL, test = test, debug = debug)
+    
+  }#ELSE
+  else if (method == "cached.hpc") {
+    
+    pc.method = check.hpc.pc.method(extra.args$pc.method)
+    
+    cache = new.env()
+    nbr = hybrid.pc.cached(t=target, data = x, nodes = nodes,
+                alpha = alpha, B = B, whitelist = whitelist, blacklist = blacklist,
+                test = test, pc.method = pc.method, cache = cache, debug = debug)
+    rm(cache)
     
   }#ELSE
 

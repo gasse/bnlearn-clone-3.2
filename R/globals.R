@@ -22,7 +22,7 @@ available.continuous.mi = c("mi-g")
 available.mi = c(available.discrete.mi, available.continuous.mi)
 
 markov.blanket.algorithms = c("gs", "iamb", "fast.iamb", "inter.iamb", "fdr.iamb")
-local.search.algorithms = c("mmpc", "si.hiton.pc", "gs.pc", "iapc", "fast.iapc", "inter.iapc", "fdr.iapc", "hpc")
+local.search.algorithms = c("mmpc", "si.hiton.pc", "gs.pc", "iapc", "fast.iapc", "inter.iapc", "fdr.iapc", "hpc", "cached.hpc")
 constraint.based.algorithms = c(markov.blanket.algorithms, local.search.algorithms)
 score.based.algorithms = c("hc", "tabu")
 hybrid.algorithms = c("rsmax2", "mmhc")
@@ -47,6 +47,7 @@ method.labels = c(
   'mmpc' = "Max-Min Parent Children",
   'si.hiton.pc' = "Semi-Interleaved HITON-PC",
   'hpc' = "Hybrid Parents and Children",
+  'cached.hpc' = "Cached Hybrid Parents and Children",
   'gs.pc' = "Grow-Shrink + neighbourhood filtering",
   'iapc' = "Incremental Association + neighbourhood filtering",
   'fast.iapc' = "Fast Incremental Association + neighbourhood filtering",
@@ -63,7 +64,8 @@ method.labels = c(
 method.extra.args = list(
   'hc' = c("max.iter", "restart", "perturb"),
   'tabu' = c("max.iter", "tabu", "max.tabu"),
-  'hpc' = c("pc.method", "nbr.join")
+  'hpc' = c("pc.method", "nbr.join"),
+  'cached.hpc' = c("pc.method", "nbr.join")
 )
 
 test.labels = c(

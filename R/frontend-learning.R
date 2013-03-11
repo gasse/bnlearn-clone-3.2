@@ -96,6 +96,20 @@ hpc = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
 
 }#HPC
 
+# Cached HPC frontend.
+cached.hpc = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
+               test = NULL, alpha = 0.05, B = NULL, debug = FALSE,
+               strict = FALSE, undirected = TRUE, nbr.join = NULL,
+               pc.method = NULL) {
+  
+  bnlearn(x = x, cluster = cluster, whitelist = whitelist,
+          blacklist = blacklist, test = test, alpha = alpha, B = B,
+          method = "cached.hpc", debug = debug, strict = strict,
+          undirected = undirected, nbr.join = nbr.join,
+          pc.method = pc.method)
+  
+}#CACHED.HPC
+
 # ARACNE frontend.
 aracne = function(x, whitelist = NULL, blacklist = NULL, mi = NULL,
                   debug = FALSE) {
