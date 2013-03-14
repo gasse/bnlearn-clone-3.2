@@ -266,6 +266,11 @@ bnlearn = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
       nbr.join = nbr.join, debug = debug)
     
   }#THEN
+  else if (method == "pc") {
+    
+    mb = pc.global(data = x, test = test, alpha = alpha, B = B, debug = debug)
+    
+  }#THEN
 
   if (undirected) {
 

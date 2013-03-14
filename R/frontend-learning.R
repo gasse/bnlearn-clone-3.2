@@ -110,6 +110,15 @@ cached.hpc = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
   
 }#CACHED.HPC
 
+# PC frontend.
+pc = function(x, alpha = 0.05, B = NULL, test = NULL, debug = FALSE, undirected = TRUE) {
+  
+  bnlearn(x = x, test = test, alpha = alpha, B = B,
+          method = "pc", debug = debug,
+          undirected = undirected)
+  
+}#PC
+
 # ARACNE frontend.
 aracne = function(x, whitelist = NULL, blacklist = NULL, mi = NULL,
                   debug = FALSE) {
