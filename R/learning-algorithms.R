@@ -271,6 +271,12 @@ bnlearn = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
     mb = pc.global(data = x, test = test, alpha = alpha, B = B, debug = debug)
     
   }#THEN
+  else if (method == "rpc") {
+      
+    mb = rpc.global(targets = colnames(x), data = x, levels=1,
+                    test = test, alpha = alpha, B = B, debug=debug)
+    
+  }#THEN
 
   if (undirected) {
 

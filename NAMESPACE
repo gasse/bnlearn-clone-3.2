@@ -9,6 +9,7 @@ export(
   "hpc",
   "cached.hpc",
   "pc",
+  "rpc",
   "chow.liu",
   "aracne",
   "hc",

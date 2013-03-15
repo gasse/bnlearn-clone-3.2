@@ -119,6 +119,18 @@ pc = function(x, alpha = 0.05, B = NULL, test = NULL, debug = FALSE, undirected 
   
 }#PC
 
+# RPC frontend.
+rpc = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
+               test = NULL, alpha = 0.05, B = NULL, debug = FALSE, optimized = TRUE,
+               strict = FALSE, undirected = TRUE) {
+  
+  bnlearn(x = x, cluster = cluster, whitelist = whitelist,
+          blacklist = blacklist, test = test, alpha = alpha, B = B,
+          method = "rpc", debug = debug, optimized = optimized,
+          strict = strict, undirected = undirected)
+  
+}#RPC
+
 # ARACNE frontend.
 aracne = function(x, whitelist = NULL, blacklist = NULL, mi = NULL,
                   debug = FALSE) {
