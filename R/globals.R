@@ -67,6 +67,7 @@ method.extra.args = list(
   'hc' = c("max.iter", "restart", "perturb"),
   'tabu' = c("max.iter", "tabu", "max.tabu"),
   'hpc' = c("pc.method", "nbr.join"),
+  'rpc' = c("targets", "level", "pc.method", "nbr.join"),
   'cached.hpc' = c("pc.method", "nbr.join")
 )
 

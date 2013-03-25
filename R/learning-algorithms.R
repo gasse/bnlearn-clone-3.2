@@ -272,9 +272,20 @@ bnlearn = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
     
   }#THEN
   else if (method == "rpc") {
-      
-    mb = rpc.global(targets = colnames(x), data = x, levels=1,
-                    test = test, alpha = alpha, B = B, debug=debug)
+    
+    targets = extra.args$targets
+    level = extra.args$level
+    pc.method = check.hpc.pc.method(extra.args$pc.method)
+    nbr.join = check.nbr.join(extra.args$nbr.join)
+    
+    if (is.null(targets))
+      targets = colnames(x)
+    if (is.null(level))
+      level = 1
+    
+    mb = rpc.global(targets = targets, data = x, level=level,
+                    test = test, alpha = alpha, B = B, debug=debug,
+                    pc.method = pc.method, nbr.join = nbr.join)
     
   }#THEN
 

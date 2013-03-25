@@ -120,14 +120,16 @@ pc = function(x, alpha = 0.05, B = NULL, test = NULL, debug = FALSE, undirected 
 }#PC
 
 # RPC frontend.
-rpc = function(x, cluster = NULL, whitelist = NULL, blacklist = NULL,
+rpc = function(x, targets = NULL, level = NULL, cluster = NULL, whitelist = NULL, blacklist = NULL,
                test = NULL, alpha = 0.05, B = NULL, debug = FALSE, optimized = TRUE,
-               strict = FALSE, undirected = TRUE) {
+               strict = FALSE, undirected = TRUE, pc.method = NULL, nbr.join = NULL) {
   
   bnlearn(x = x, cluster = cluster, whitelist = whitelist,
           blacklist = blacklist, test = test, alpha = alpha, B = B,
           method = "rpc", debug = debug, optimized = optimized,
-          strict = strict, undirected = undirected)
+          strict = strict, undirected = undirected,
+          pc.method = pc.method, nbr.join = nbr.join,
+          targets = targets, level = level)
   
 }#RPC
 
